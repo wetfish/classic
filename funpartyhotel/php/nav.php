@@ -1,0 +1,1 @@
+Go <a href='#home'>Home</a> | <a href='#lobby'>Lobby</a> | <a href='javascript:NewCharacter()'>Change your Avatar</a>

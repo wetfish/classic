@@ -1,0 +1,1 @@
+<?phpinclude('mysql.php');session_start();?><?php if($_SESSION['Name']): echo "Hello {$_SESSION['Name']}<hr />"; ?><a href='#lobby'>Go to the Lobby</a><br /><a href='#signout'>Sign Out</a><hr /><?php else: ?>Hello Friends<hr /><?php endif; ?><a href='#register'>Create a Character</a><br /><a href='#signin'>Sign In</a>

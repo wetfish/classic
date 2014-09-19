@@ -1,0 +1,638 @@
+ <html>
+    <head>
+        <title>Welcome to Fun Party Hotel!</title>
+        
+		<script src='js/datadumper.js'></script>
+        <script src='js/jquery.min.js'></script>
+		<script src='js/jquery.hashchange.js'></script>
+		<script src='js/jquery.rotate.js'></script>
+        <script src='js/jquery-ui.min.js'></script>
+        <link href='js/jquery-ui.css' rel='stylesheet' type='text/css' />
+
+        <script>
+			// Basic functions.
+		
+			function LoadMap(File)
+			{
+				Interval = clearInterval(Interval);
+				InGame = 0;
+			
+				$('#map').css('width', '800px');
+				$('#map').css('background-image', '');
+			
+				$('.window').remove();
+				$('#map').css('background-image', 'url(maps/' + File + ')');
+			
+//				$('#map').html("<img src='maps/" + File + "' />");
+				$('#map').css('-moz-user-select', 'none');
+				$('#map').css('-webkit-user-select', 'none');
+				
+				$('#chat').html("");
+			}
+			
+			function LoadWindow(Window)
+			{
+				$('#map').append("<div id='" + Window.id + "' class='window'><div id='" + Window.id + "-content' class='window-content'></div></div>");
+				
+				var $ID = '#' + Window.id;
+				$($ID + '-content').load(Window.file, function()
+				{
+					$($ID).animate({left: ($('#map').width() / 2) - $($ID).width() / 2, 
+									top: ($('#map').height() / 2) - $($ID).height() / 2});
+									
+					if(Window.Handler)
+						Window.Handler();
+				});
+				
+				$($ID).draggable();
+				
+				$($ID).keydown(function(event)
+				{
+					event.stopPropagation();
+				});
+			}
+			
+			var Interval;
+			
+			function LoadCharacter(ID, Player)
+			{
+				$ID = '#' + ID;
+				$('#map').append("<div class='character' name='"+ Player.name +"' id='"+ ID +"'></div>");
+				
+				//$($ID).css('background-image', 'url('+Player.image+')');
+				$($ID).html("<img id='"+ ID +"-image' src='"+ Player.image +"' />");
+				$($ID).css({top: 50, left:50});
+				
+				var ImageID = "#"+ ID +"-image";
+				
+				$(ImageID).load(function ()
+				{
+					var Width = $(ImageID).width();
+					var Height = $(ImageID).height();
+					
+					if(Width > Height && Width > 150)
+					{
+						$(ImageID).css('width', '150');
+					}
+					else if(Height > 150)
+					{
+						$(ImageID).css('height', '150');
+					}
+
+					$(ImageID).css('-moz-user-select', 'none');
+					$(ImageID).css('-webkit-user-select', 'none');
+					
+				});
+				
+				$($ID).click(function()
+				{
+					event.stopPropagation();
+					return false;
+				});
+				
+				$($ID).hover(function()
+				{
+					$(this).append("<div class='character-name'>"+ Player.name +"</div>");
+					$(this).css('z-index', '2');
+				},
+				
+				function()
+				{
+					$('.character-name').remove();
+					
+					if(ID != "me")
+						$(this).css('z-index', '0');
+				});
+				
+				
+				
+				if(ID == "me")
+				{
+					Interval = setInterval("Refresh()", 1000);				
+				
+					$('#map').click(function(event)
+					{
+						var mapOffset = $('#map').offset();
+						
+						var Offset = new Object;
+						//Offset.x = event.layerX - ($('#me').width() / 2);
+						//Offset.y = event.layerY - $('#me').height();
+						Offset.x = Math.floor(event.pageX - mapOffset.left - ($('#me').width() / 2));
+						Offset.y = Math.floor(event.pageY - mapOffset.top - $('#me').height());
+
+//console.log(Offset);
+
+						var ImageID = "#me-image";
+						
+						$(ImageID).toggleClass('flip-horizontal');
+						
+						$('#me').stop();
+						$('#me').animate({left: Offset.x, top: Offset.y}, 2000);
+						$.get('php/move.php', {x: Offset.x, y: Offset.y}, function(Response) { });
+					});
+					
+	/*				$('#me').draggable({ stop: function(event, ui)
+					{
+						var Offset = ui.position;
+						
+						if(Offset.left < 0)
+							Offset.x = 0;
+						else if(Offset.left > $('#map').width() - ($('#me').width() / 2))
+							Offset.x = $('#map').width() - ($('#me').width() / 2);
+						else
+							Offset.x = Offset.left;	
+							
+						if(Offset.top < 0)
+							Offset.y = 0;
+						else if(Offset.top > $('#map').height() - $('#me').height())
+							Offset.y = $('#map').height() - $('#me').height();
+						else
+							Offset.y = Offset.top;
+							
+						$('#me').stop();
+						$('#me').animate({left: Offset.x, top: Offset.y}, 2000);
+						$.get('php/move.php', {x: Offset.x, y: Offset.y}, function(Response) { });	
+					}}); */
+				}
+			}
+			
+			function MoveCharacter(ID, Player)
+			{
+				$ID = '#' + ID;
+				if(!($($ID).length))
+				{
+					LoadCharacter(ID, Player);
+				}
+		
+				var From = $($ID).offset();
+		
+				var Offset = Player.location.split(",");
+				
+				$($ID).stop();
+				$($ID).animate({left: Offset[0], top: Offset[1]}, 2000);
+			}
+		
+			// Game functions.
+			
+			function StartMenu()
+			{
+				LoadMap('welcome.jpg');
+				LoadWindow({id: 'start', file: 'php/index.php'});
+			}
+		
+			function Register()
+			{
+				LoadMap('character.jpg');
+
+				var Window = new Object;
+				Window.id = 'character';
+				Window.file = 'php/character.php';
+				Window.Handler = function()
+				{				
+					$('#new-character').submit(function(event)
+					{
+						event.preventDefault();
+						$.post('php/character.php', $(this).serialize(), function(Response)
+						{
+							$('#character-content').html(Response);
+						});
+					});
+				};
+				
+				LoadWindow(Window);
+				
+			}
+		
+			function SignIn()
+			{
+				LoadMap('signin.jpg');
+				LoadWindow({id: 'signin', 
+							file: 'php/signin.php',
+							Handler: function()
+							{
+								$('#form').submit(function(event)
+								{
+									event.preventDefault();
+									$.post('php/signin.php', $(this).serialize(), function(Response)
+									{
+										$('#signin-content').html(Response);
+									});
+								});
+							}});
+			}
+			
+			function SignOut()
+			{
+				LoadMap('signout.jpg');
+				LoadWindow({id: 'signout', file: 'php/signout.php'});
+			}
+		
+			function Lobby()
+			{
+				LoadMap('lobby.jpg');
+				LoadWindow({id: 'lobby', file: 'php/lobby.php'});
+			}
+		
+			// Play the game!
+		
+			var InGame;		
+			function LoadGame(Map)
+			{
+				InGame = 1;
+			
+				$.getJSON('php/me.php?map=' + Map,
+				function(Data)
+				{
+					$.each(Data,
+						function(PlayerID, Player)
+						{
+							MoveCharacter(PlayerID, Player);
+						})
+				});
+				
+				//$('#map').append("<div id='navigation'></div>");
+				$('#navigation').load('php/nav.php');
+				
+				//$('#map').append("<div id='chat'></div>");
+				$('#chat').append("<div id='chat-input'></div>");
+				$('#chat').append("<div id='chat-content'></div>");
+				
+				$('#chat-input').attr('contenteditable', 'true');
+				$('#chat-input').html('&nbsp;');
+				
+				$(document).keydown(function()
+				{
+					$('#chat-input').focus();
+				});
+
+				
+				$('#chat-input').keydown(function(event)
+				{				
+					if(event.keyCode == 13 &&
+						event.altKey == false &&
+						event.ctrlKey == false &&
+						event.shiftKey == false)
+					{
+						event.preventDefault();
+						
+						$(this).css('background-image', "url(http://funpartyhotel.com/super.gif)");
+						
+						$.post('php/chat.php', {data: Trim($('#chat-input').text()) }, function()
+						{
+							$('#chat-input').html('&nbsp;');
+						});
+					}
+				});
+			}
+		
+			function Refresh(Map)
+			{
+				if(InGame == 1)
+				{
+					$.getJSON('php/refresh.php',
+						function(Data)
+						{
+							$.each(Data,
+								function(PlayerID, Player)
+								{
+									MoveCharacter(PlayerID, Player);
+								})
+						});
+					
+					if($('#chat-input').length)
+						$('#chat-input').css('background-image', "url(http://funpartyhotel.com/background.png)");
+					
+					if($('#chat-content').length)
+						$('#chat-content').load('php/chat.php');
+				}
+			}
+
+			// Different game maps
+		
+			function Basement()
+			{
+				LoadMap('piss-room.jpg');
+				LoadGame('1');
+			}
+		
+			function DanceParty()
+			{
+				LoadMap('danceparty.gif');
+				LoadGame('2');
+				
+				$('#map').append("<embed src='sounds/danceparty.mp3' width='0' height='0' autostart='true' repeat='true' loop='true'></embed>");
+			}
+			
+			function Roof()
+			{
+				LoadMap('roof.gif');
+				LoadGame('3');
+			}
+		
+			function Pool()
+			{
+				LoadMap('pool.png');
+				LoadGame('4');
+				
+				$('#map').append("<div id='water' style='background-image:url(maps/water-new.png); width:800px; height:283px;'></div>");
+				$('#water').css('position', 'absolute');
+				$('#water').css('left', '0');
+				$('#water').css('bottom', '0');
+				$('#water').css('z-index', '3');
+			}
+			
+			function Outside()
+			{
+				$('#map').html('');
+				$('#chat').html('');
+				
+				LoadGame('5');
+				$('#map').css('width', '8000px');
+				$('#map').css('background-image', 'url(maps/green-grass.png)');
+				
+				$('#header').css('width', $('#header').css('width'));
+				$('#header').css('position', 'absolute');
+				$('#map').css('margin-top', $('#header').height());
+				$('#chat').css('position', 'absolute');
+				
+				$.getJSON('php/items.php?map=' + 5,
+				function(Response)
+				{
+					$.each(Response,
+						function(Counter, Item)
+						{
+							var ItemID = Counter +'-item';
+							var $ItemID = '#' + ItemID;
+						
+							$('#map').append("<div id='"+ ItemID +"' class='item'  style='position:absolute; top: 420px; left:420px;'></div>");
+							$($ItemID).append("<img src='http://i484.photobucket.com/albums/rr203/cube9948/joint.gif' />");
+							$($ItemID).bind(Item.type, new Function(Item.code));
+						})
+				
+					//DumperAlert(Response);			
+				});
+				
+				$(document).scroll(function()
+				{
+					$('#header').stop();
+					$('#header').animate({top:0,left:$(document).scrollLeft() + (($(window).width() - $('#header').width()) / 2) });
+
+					$('.window').stop();
+					$('.window').animate({top:0,left:$(document).scrollLeft() + (($(window).width() - $('.window').width()) / 2) });
+					
+					$('#chat').stop();
+					$('#chat').animate({left:$(document).scrollLeft() + (($(window).width() - $('#chat').width()) / 2) });
+				});
+				
+				$('#map').mousedown(function(event)
+				{
+					$(document).scrollLeft(event.layerX - ($(window).width() / 2));
+				});
+			}
+			
+			function OuterSpace()
+			{
+				$('#map').html('');
+				$('#chat').html('');
+				
+				LoadGame('6');
+				$('#map').css('width', '8000px');
+				
+				$('#header').css('width', $('#header').css('width'));
+				$('#header').css('position', 'absolute');
+				$('#map').css('margin-top', $('#header').height());
+				$('#chat').css('position', 'absolute');
+				
+				$(document).scroll(function()
+				{
+					$('#header').stop();
+					$('#header').animate({top:0,left:$(document).scrollLeft() + (($(window).width() - $('#header').width()) / 2) });
+					
+					$('.window').stop();
+					$('.window').animate({top:0,left:$(document).scrollLeft() + (($(window).width() - $('.window').width()) / 2) });
+					
+					$('#chat').stop();
+					$('#chat').animate({left:$(document).scrollLeft() + (($(window).width() - $('#chat').width()) / 2) });
+				});
+				
+				$('#map').mousedown(function(event)
+				{
+					$(document).scrollLeft(event.layerX - ($(window).width() / 2));
+				});
+			}
+						
+			function ChatHistory()
+			{
+				LoadMap('chat-history.jpg');
+				LoadWindow({id: 'chat-history', file: 'php/chat-history.php'});
+			}
+			
+			function NewCharacter()
+			{
+				var Window = new Object;
+				Window.id = 'character';
+				Window.file = 'php/account.php';
+				Window.Handler = function()
+				{				
+					$('#new-character').submit(function(event)
+					{
+						event.preventDefault();
+						$.post('php/account.php', $(this).serialize(), function(Response)
+						{
+							$('#character-content').html(Response);
+						});
+					});
+				};
+				
+				LoadWindow(Window);
+			}
+		
+			function Trim (str)
+			{
+				str = str.replace(/<br>/ig, '');
+				str = str.replace(/&nbsp;/ig, '');
+				return str.replace(/(^\s+|\s+$)/g, '');
+			}
+		
+			function Go(Page)
+			{
+				switch(Page)
+				{
+					case "#register":
+						Register();
+					break;
+				
+					case "#signin":
+						SignIn();
+					break;
+				
+					case "#signout":
+						SignOut();
+					break;
+				
+					case "#lobby":
+						Lobby();
+					break;
+				
+					case "#basement":
+						Basement();
+					break;
+					
+					case "#chat-history":
+						ChatHistory();
+					break;
+				
+					case "#dance-party":
+						DanceParty();
+					break;
+					
+					case "#roof":
+						Roof();
+					break;
+			
+					case "#pool":
+						Pool();
+					break;
+					
+					case "#outside":
+						Outside();
+					break;
+					
+					case "#outerspace":
+						OuterSpace();
+					break;
+			
+					default:
+						StartMenu();
+					break;
+				}
+			}
+			
+						
+			function Scroll(Amount)
+			{
+				var Current = $(document).scrollTop();
+				var Adjusted = Current + Amount;
+				
+				$(document).scrollTop(Adjusted);
+			}
+
+			$(document).keydown(function(event)
+			{
+				if(event.keyCode == 27)
+					Close(WindowID);
+				else if(event.keyCode == 40) {
+					Scroll(32);
+					event.preventDefault(); }
+					
+				else if(event.keyCode == 38) {
+					Scroll(-32);
+					event.preventDefault(); }
+					
+				else if(event.keyCode == 34) {
+					Scroll(256);
+					event.preventDefault(); }
+					
+				else if(event.keyCode == 33) {
+					Scroll(-256);
+					event.preventDefault(); }
+				
+					//alert('keycode '+event.keyCode+"\n which "+event.which);
+			});			
+		
+            $(document).ready(function ()
+            {
+				$(window).hashchange(function() { Go(location.hash) });
+				Go(location.hash);
+            });
+        </script>
+		
+		<style>
+			body { background-color:#000;
+					background-image:url(sparkle.gif);
+					color:#fff;
+					font-family:"Comic Sans MS", "Comic Sans";}
+			
+			a { color:#E87EE1; text-decoration: none; }
+			a:hover { text-decoration: underline; }
+			
+			td { padding:0 8px; }
+			
+			#title { overflow: hidden; }
+			
+			#navigation { height: 24px; }
+			
+			#map { position:relative;
+					width:800px;
+					height:600px;
+					overflow:hidden; }
+					
+			#chat { width:800px;
+					margin:8px 0; }
+					
+			#me { z-index:2; }
+			#chat-input { border:1px #fff dashed; outline:0; padding:4px; min-height:24px; background-image:url('http://funpartyhotel.com/background.png'); }
+			
+			.window { position:absolute;
+					background-image:url(http://funpartyhotel.com/rainbow.gif); 
+					max-width:400px;
+					border:2px solid #000;
+					-moz-border-radius: 8px;
+					-webkit-border-radius: 8px; }
+					
+			.window-content { padding:16px;
+							background-image:url(http://funpartyhotel.com/background.png);
+							border:1px solid #fff;
+							-moz-border-radius: 8px;
+							-webkit-border-radius: 8px; }
+							
+			.character-name { margin-top:8px;
+							padding:4px;
+							background-image:url(http://funpartyhotel.com/background.png);
+							border:1px solid #fff;
+							-moz-border-radius: 8px;
+							-webkit-border-radius: 8px; }
+		
+			.item { z-index:9 }
+			.item { z-index:9 }
+		
+			.character { position:absolute; }
+			.time { width:120px; }
+			
+			.flip-horizontal {
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: fliph; /*IE*/
+}
+.flip-vertical {
+    -moz-transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -o-transform: scaleY(-1);
+    transform: scaleY(-1);
+    filter: flipv; /*IE*/
+}
+
+		</style>
+    </head>
+    
+    <body>
+		<center>
+			<div id='header'>
+				<div id='title'>
+					<blink style='font-size:24pt; font-weight:bold'>Welcome to Fun Party Hotel!</blink> <a style='font-size:20pt;'  href='http://wiki.wetfish.net/' target='_blank'>Brought to you by Wetfish</a>
+				</div>
+
+<center><iframe id='leader-friend' 
+src='http://wetfish.net/friendship/leader.html' style='width:750px; 
+height:115px; border:0; outline:0; overflow:hidden;' scrolling='no'></iframe></center>
+		
+				<div id='navigation'></div>
+			</div>
+			
+			<div id='map'></div>
+			<div id='chat'></div>
+		</center>
+	</body>
+</html>

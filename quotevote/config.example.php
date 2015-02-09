@@ -7,4 +7,7 @@ define("MYSQL_USER", "username");
 define("MYSQL_PASSWORD", "password");
 define("MYSQL_DATABASE", "database");
 
+// Password used when generating/updating the quote list
+define("ADMIN_PASSWORD", "password");
+
 ?>

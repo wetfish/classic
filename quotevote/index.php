@@ -51,7 +51,19 @@ function cleanArray($array) {
 @mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD) or die("Error: Unable to connect to the MySQL server.");
 @mysql_select_db(MYSQL_DATABASE) or die("Error: Unable to access the MySQL database.");
 
-if($_GET['quotesrc'] != "")
+mysql_set_charset('utf8');
+
+foreach($_GET as $key => $value)
+{
+    $_GET[$key] = mysql_real_escape_string($value);
+}
+
+foreach($_COOKIE as $key => $value)
+{
+    $_COOKIE[$key] = mysql_real_escape_string($value);
+}
+
+if($_GET['quotesrc'] != "" && $_GET['admin'] == ADMIN_PASSWORD)
 {
 	$quotes = str_replace("<", "&lt;", file_get_contents($_GET['quotesrc']));
 	$quotes = explode("\n", str_replace("\r", "", $quotes));
@@ -64,7 +76,7 @@ if($_GET['quotesrc'] != "")
 		die("Quote list updated successfully. Redirecting...<meta http-equiv = \"refresh\" content = \"1;url=./\">");
 }
 
-if($_GET['quotereset'] != "")
+if($_GET['quotereset'] != "" && $_GET['admin'] == ADMIN_PASSWORD)
 {
 	$quotes = str_replace("<", "&lt;", file_get_contents($_GET['quotereset']));
 	$quotes = explode("\n", $quotes);
@@ -121,7 +133,7 @@ if($_GET['win'] != "")
 	die("Quote #{$_GET['win']} wins! Redirecting...<meta http-equiv = \"refresh\" content = \"1;url=./#{$_GET['win']}\">");
 }
 
-if($_GET['fix'] != "")
+if($_GET['fix'] != "" && $_GET['admin'] == ADMIN_PASSWORD)
 {
 	$quoteinfo = mysql_query("SELECT `id`,`vote`,`ip` FROM `redvote`");
 	while(list($id, $vote, $ip) = mysql_fetch_array($quoteinfo))

@@ -1,5 +1,13 @@
 <?php
 
+function Clean($Input, $Type="dicks")
+{
+        if($Type == "textarea")
+                return str_replace(array("<", ">", "\"", "'", "\\", "`", "\r"), array("&lt;", "&gt;", "&#34;", "&#39;", "&#92;", "&#96;", ""), stripslashes($Input));
+        else
+                return trim(str_replace(array("<", ">", "\"", "'", "\\", "`", "\r", "\n"), array("&lt;", "&gt;", "&#34;", "&#39;", "&#92;", "&#96;", "", "$Break"), stripslashes($Input)));
+}
+
 function CountUp($Count, $Files)
 {
 	$Count++;

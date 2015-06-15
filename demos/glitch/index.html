@@ -1,0 +1,75 @@
+<html>
+	<head>
+		<title>This is a test of the Wetfish Emergency Broadcast System.</title>
+			
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js'></script>
+		<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js'></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" />
+		<script src='jquery.transform.js'></script>
+		
+		<style>
+			body { background-color:#000; color:#eee }
+			#container { position:relaltive; height:329px; width:493px; border:1px solid #fff; margin:0 auto; }
+			
+			#container div {  position:absolute; }
+			#container img {  }
+			
+			#slider { width:475px; margin:20px auto; }
+		</style>
+		
+		<script>
+			var zindex = 0;
+			var timeout = 110;
+		
+			function glitch(element)
+			{
+				var random=Math.ceil(Math.random()*17);
+				
+				if(element.find('img#'+random).length)
+				{
+					//var zindex = parseInt(element.find('img#'+random).css('z-index'));
+					zindex++;
+					
+					var randomStuff = Math.ceil(Math.random() * 6)
+					
+					if(randomStuff == 1)
+						element.find('div#'+random).transform({reflectX: true});
+					else if(randomStuff == 2)
+						element.find('div#'+random).transform({reflectY: true});
+					else if(randomStuff == 3)
+						element.find('div#'+random).transform({reflect: true});
+					else if(randomStuff == 4)
+						element.find('div#'+random).transform({reflect: false});
+					else if(randomStuff == 5)
+						element.find('div#'+random).transform({reflectY: false});						
+					else
+						element.find('div#'+random).transform({reflectX: false});
+				
+					element.find('div#'+random).css({'z-index': zindex});
+				}
+				else
+				{
+					element.prepend("<div id='"+random+"'><img id='"+random+"' src='broken-rainbow-"+random+".png'></div>");
+				}
+				
+				setTimeout("glitch($('#container'))", timeout);
+				//element.animate();
+			}		
+		
+			$(document).ready(function()
+			{
+				$("#slider").slider({value:10, change: function(event, ui)
+				{
+					timeout = 11 * ui.value;
+				}});
+				
+				glitch($('#container'));
+			});
+		</script>
+	</head>
+	
+	<body>		
+		<div id='container' title="jesus fuck what the shit is this I'm serious this is like tripping my balls off hardcore dude">hi</div>
+		<div id='slider' title='speed'></div>
+	</body>
+</html>

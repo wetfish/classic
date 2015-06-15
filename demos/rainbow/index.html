@@ -1,0 +1,283 @@
+<html>
+	<head>
+		<title>Welcome to HSLA</title>
+			
+		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'></script>
+		<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js'></script>
+		<script src='/js/jquery.transform.js'></script>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css" type="text/css" />
+		
+		
+		<style>
+			body { color:#ccc; margin:0;s }
+			
+			#grid-container { position:fixed; height:100%; width:100%; margin:-155px -444px; }
+			#grid { position:relative; height:100%; width:100%; }
+			.grid { position:absolute; height:128px; width:128px; border-radius:420px; }
+			.new { display:none; }
+		</style>
+		
+		<script>
+			var tile = new Object();
+			tile.width = 300;
+			tile.height = 300;
+			var grid = new Object();
+			
+			
+			function createGrid()
+			{
+				grid.width = Math.ceil($('#grid').width() / tile.width) ; 
+				grid.height = Math.ceil($('#grid').height() / tile.height) ; 
+				grid.count = 0;
+				grid.overwrite = 0;
+				grid.group = 0;
+				
+				var offset = new Object();
+				offset.y = 0;
+				offset.x = 0;
+				
+				for(var y = 0; y < grid.height; y++)
+				{
+					for(var x = 0; x < grid.width; x++)
+					{
+						var randomType = (grid.count % 3) + 4;
+						var randomRed = 0;
+						var randomBlue = 0;
+						var randomGreen = 0;
+
+						
+						if(randomType == 1)
+						{
+							randomRed = Math.ceil(Math.random() * 211) + 44;
+							randomBlue = Math.ceil(Math.random() * 48) + 16;
+							randomGreen = Math.ceil(Math.random() * 48) + 16;
+						}
+						else if(randomType == 2)
+						{
+							randomRed = Math.ceil(Math.random() * 48) + 16;
+							randomBlue = Math.ceil(Math.random() * 211) + 44;
+							randomGreen = Math.ceil(Math.random() * 48) + 16;
+						}
+						else if(randomType == 3)
+						{
+							randomRed = Math.ceil(Math.random() * 48) + 16;
+							randomBlue = Math.ceil(Math.random() * 48) + 16;
+							randomGreen = Math.ceil(Math.random() * 211) + 44;
+						}
+						else
+						{
+							randomRed = Math.ceil(Math.random() * 360);
+							randomBlue = Math.ceil(Math.random() * 5) + 95; // Now saturation.
+							randomGreen = Math.ceil(Math.random() * 44) + 14;							
+						}
+						
+						var randomOpacity = (Math.random() / 2);
+						var randomSize = Math.ceil(Math.random() * 44) + 4;
+						
+						grid.group++;
+						grid.count++;					
+						$('#grid').append("<div class='grid grid-"+grid.count+" group-"+grid.group+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+offset.y+"px; left:"+(offset.x + (grid.group * 20))+"px; background-color:hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+");'></div>");
+
+						grid.count++;					
+						$('#grid').append("<div class='grid grid-"+grid.count+" group-"+grid.group+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+offset.y+"px; left:"+(offset.x + (grid.group * 20))+"px; background-color:hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+");'></div>");
+
+						grid.count++;					
+						$('#grid').append("<div class='grid grid-"+grid.count+" group-"+grid.group+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+offset.y+"px; left:"+(offset.x + (grid.group * 20))+"px; background-color:hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+");'></div>");
+
+						grid.count++;					
+						$('#grid').append("<div class='grid grid-"+grid.count+" group-"+grid.group+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+offset.y+"px; left:"+(offset.x + (grid.group * 20))+"px; background-color:hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+");'></div>");
+						
+						grid.count++;					
+						$('#grid').append("<div class='grid grid-"+grid.count+" group-"+grid.group+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+offset.y+"px; left:"+(offset.x + (grid.group * 20))+"px; background-color:hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+");'></div>");
+
+						grid.count++;					
+						$('#grid').append("<div class='grid grid-"+grid.count+" group-"+grid.group+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+offset.y+"px; left:"+(offset.x + (grid.group * 20))+"px; background-color:hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+");'></div>");
+
+						grid.count++;					
+						$('#grid').append("<div class='grid grid-"+grid.count+" group-"+grid.group+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+offset.y+"px; left:"+(offset.x + (grid.group * 20))+"px; background-color:hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+");'></div>");
+
+						
+						offset.x += tile.width;
+					}
+					
+					offset.x = 0;
+					offset.y += tile.height;
+				}
+				
+				// Grid fixer
+				
+				$('.grid').each(function()
+				{
+					
+				});
+			}
+		
+		
+			function changeColor()
+			{
+				var randomID = Math.ceil(Math.random() * grid.count);	
+				var randomRed = Math.ceil(Math.random() * 360);
+				var randomBlue = Math.ceil(Math.random() * 5) + 95; // Now saturation
+				var randomGreen = Math.ceil(Math.random() * 44) + 14;
+				var randomOpacity = (Math.random() / 2);
+				var gridElement = $('.grid-'+randomID);
+
+//				var circleDepth = (((gridElement.width()-32)/(320-32)));
+//				console.log(circleDepth);
+
+				
+				gridElement.css({'z-index': gridElement.width() * -1, 'background-color': "hsla("+randomRed+","+randomBlue+"%,"+randomGreen+"%,"+randomOpacity+")"});
+			}
+		
+			function moveGrid()
+			{
+				var randomID = Math.ceil(Math.random() * grid.count);
+				var gridElement = $('.grid-'+randomID);
+
+				var randomChance = Math.ceil(Math.random() * 4);
+
+				gridElement.stop();
+		
+				if(randomChance == 1 && parseInt(gridElement.css('top')) < $('#grid').height())
+					gridElement.animate({'top': '+='+ Math.ceil(Math.random() * $('#grid').height())}, (654321 / gridElement.height()));
+				else if(randomChance == 2 && parseInt(gridElement.css('top')) > 0)
+					gridElement.animate({'top': '-='+ Math.ceil(Math.random() * $('#grid').height())}, (654321 / gridElement.height()));
+				else if(randomChance == 3 && parseInt(gridElement.css('left')) < $('#grid').width())
+					gridElement.animate({'left': '+='+ Math.ceil(Math.random() * $('#grid').width())}, (654321 / gridElement.width()));
+				else if(randomChance == 4  && parseInt(gridElement.css('left')) > 0)
+					gridElement.animate({'left': '-='+ Math.ceil(Math.random() * $('#grid').width())}, (654321 / gridElement.width()));
+			}
+		
+			function addGrid()
+			{
+				var randomRed = Math.ceil(Math.random() * 255);
+				var randomBlue = Math.ceil(Math.random() * 255);
+				var randomGreen = Math.ceil(Math.random() * 255);
+				var randomOpacity = (Math.random() / 2) + 0.22;
+				var randomY = Math.ceil(Math.random() * $('#grid').height());
+				var randomX = Math.ceil(Math.random() * $('#grid').width());
+				var randomSize = Math.ceil(Math.random() * 128) + 32;
+				
+				alert(grid.count);
+				
+				grid.count++;
+				var count = grid.count;
+				
+				if(grid.count > 128)
+				{
+					if(grid.overwrite > 128)
+						grid.ovoerwrite = 0;
+				
+					grid.overwrite++;
+					grid.count--;
+					
+					EXTERMINATE(grid.overwrite);
+					count = grid.overwrite;
+				}
+				
+				$('#grid').append("<div class='new grid grid-"+count+"' style='width:"+randomSize+"px; height:"+randomSize+"px; top:"+randomY+"px; left:"+randomX+"px; background-color:rgba("+randomRed+","+randomBlue+","+randomGreen+","+randomOpacity+");'></div>");
+				$('.new').fadeIn('slow');
+			}
+			
+			function EXTERMINATE(INFERIOR)
+			{
+				var gridElement = $('.grid-'+INFERIOR);
+			
+				gridElement.css({'z-index':9123456789});
+				gridElement.fadeOut('fast', function() { $(this).remove() });
+			}
+		
+			function resizeGrid()
+			{			
+				var randomID = Math.ceil(Math.random() * grid.count);
+				
+				//$('#output').text(randomID);
+				
+				var randomSize = Math.ceil(Math.random() * (tile.width + 244));
+				var gridElement = $('.grid-'+randomID);
+				var gridElementUp = $('.grid-'+(randomID + 1));
+				var gridElementDown = $('.grid-'+(randomID - 1));
+
+				
+				
+				gridElementUp.css({'z-index': randomSize * -1 - 144});
+				gridElementUp.animate({'width': randomSize - 144, 'height': randomSize - 144}, 555);
+			
+				gridElement.css({'z-index': randomSize * -1});
+				gridElement.animate({'width': randomSize, 'height': randomSize}, 1444);
+
+				gridElementDown.css({'z-index': (randomSize + 144) * -1 });
+				gridElementDown.animate({'width': randomSize + 144, 'height': randomSize + 144}, 2822);
+
+			}
+		
+			function changeBackground()
+			{
+				var randomRed = Math.ceil(Math.random() * 64) + 191;
+				var randomBlue = Math.ceil(Math.random() * 64) + 191;
+				var randomGreen = Math.ceil(Math.random() * 64) + 191;
+
+				$('body').animate({'background-color': "rgb("+randomRed+","+randomBlue+","+randomGreen+")"}, 555);
+			}
+			
+			function rotateGrid()
+			{
+				var randomID = Math.ceil(Math.random() * grid.count);	
+				var gridElement = $('.grid-'+randomID);
+
+				//gridElement.animate({'rotate': '+= 44deg'});
+	
+				gridElement.animate({rotate: '+=44deg'});
+	
+//				gridElement.({'background-color': 'rgb(0, 0, 0)'});
+			}
+
+			function wiggle()
+			{
+							var randomID = Math.ceil(Math.random() * grid.count);
+				
+				//$('#output').text(randomID);
+				var randomSize = Math.ceil(Math.random() * (tile.width));
+				
+				var gridElement = $('.grid-'+randomID);
+				var gridElementUp = $('.grid-'+(randomID + 1));
+				var gridElementDown = $('.grid-'+(randomID - 1));
+
+				var randomKayimbo = Math.ceil(Math.random() * 3);
+				
+				if(randomKayimbo == 1)
+				{
+					gridElementUp.animate({'margin-top': randomSize - 444}, 555);
+					gridElement.animate({'margin-top': randomSize * -1}, 1444);
+					gridElementDown.animate({'margin-top': (randomSize + 44) * -1}, 2822);				
+				}
+				else
+				{	
+					gridElementUp.animate({'margin': randomSize - 144}, 555);
+					gridElement.animate({'margin': randomSize}, 1444);
+					gridElementDown.animate({'margin': randomSize + 144}, 2822);
+				}
+			}
+			
+			$(document).ready(function()
+			{
+				createGrid();
+				setInterval('changeColor()', 88);
+				//setInterval('moveGrid()', 4);
+				setInterval('resizeGrid()', 44);
+	//			setInterval('rotateGrid()', 0.001);
+				//setInterval('changeBackground()', 555);
+				setInterval('wiggle()', 22);
+				//setInterval('addGrid()', 32);
+			});
+		</script>
+	</head>
+	
+	<body>
+		<div id='grid-container'> 
+			<div id='grid'></div> 
+		</div>
+		
+		<div id='output'></div>
+	</body>
+</html>

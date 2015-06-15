@@ -1,0 +1,109 @@
+ <html>
+	<head>
+		<title>Welcome to Plaid</title>
+			
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+		<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js'></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" />
+		
+		<style>
+			body { color:#eee; margin:0; }
+			
+			.pink { background-image:url('pink.png') }
+			.blue { background-image:url('blue.png') }
+			.white { background-image:url('white.png') }
+			
+			.horizontal { width:100%; }
+			.vertical { height:100%; }
+
+			#plaid-container { background-color:rgba(69, 42, 32, 0.98); position:fixed; height:100%; width:100%; }
+			#plaid { position: relative; height:100%; width:100%; }
+			#plaid div { position:absolute; }
+			
+			#reset { z-index:1; position:absolute; }
+		</style>
+		
+		<script>
+			var plaid = new Object();
+			plaid.width = 64;
+			plaid.height = 64;
+		
+			function randomColor()
+			{
+				var color = Math.ceil(Math.random() * 3);
+				
+				if(color == 1)
+					return 'pink';
+				else if(color == 2)
+					return 'blue';
+				else
+					return 'white';
+			}
+			
+			function makePlaid()
+			{
+				plaid.vertical = Math.ceil($('#plaid').width() / plaid.width) - 4;
+				plaid.horizontal = Math.ceil($('#plaid').height() / plaid.height) - 4;
+
+				
+				for(var vertical = 1; vertical <= plaid.vertical; vertical++)
+				{
+					var color = randomColor();
+					var width = Math.ceil(Math.random() * plaid.width) + 16;
+					var left = Math.ceil(Math.random() * plaid.width) + (plaid.width * vertical);
+					
+					if(width % 3)
+						width = width - (width % 3);
+
+					if(left % 3)
+						left = left - (left % 3);
+					
+					$('#plaid').append("<div id='vertical-"+vertical+"' class='vertical "+color+"' style='width:"+width+"px; left:"+left+"px;'></div>");
+					$('#vertical-'+vertical).hide().delay(50 * vertical).fadeIn();
+				}
+
+				for(var horizontal = 1; horizontal <= plaid.horizontal; horizontal++)
+				{
+					var color = randomColor();
+					var height = Math.ceil(Math.random() * plaid.height) + 16;
+					var top = Math.ceil(Math.random() * plaid.height) + (plaid.height * horizontal);
+					
+					if(height % 3)
+						height = height - (height % 3);
+					
+					if(top % 3)
+						top = top - (top % 3);
+					
+					top--;
+					
+					$('#plaid').append("<div id='horizontal-"+horizontal+"' class='horizontal "+color+"' style='height:"+height+"px; top:"+top+"px;'></div>");
+					$('#horizontal-'+horizontal).hide().delay(100 * horizontal).fadeIn();
+				}			
+			}
+		
+			function resetPlaid()
+			{
+				$('#plaid').html('');
+			}
+		
+			$(document).ready(function()
+			{
+				makePlaid();
+				
+				$('#reset').click(function()
+				{
+					resetPlaid();
+					makePlaid();
+				});
+			});
+		</script>
+	</head>
+	
+	<body>	
+		<div id='plaid-container'>
+			<div id='plaid'></div>
+		</div>
+		
+		<input type='button' id='reset' value='Reset'>
+	</body>
+</html>

@@ -1,0 +1,240 @@
+
+<html>
+	<head>
+		<title>Welcome to Wetfish!</title>
+		<link rel="icon" type="image/png" href="https://wiki.wetfish.net/favzz.png"/>
+
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'></script> 
+		<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js'></script> 
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/base/jquery-ui.css" type="text/css" /> 
+		
+		<style>			
+			body { margin:0 4% 64px 4%; background-image:url(https://wiki.wetfish.net/missingno.png); color: #FFFFFF; font-family: Tahoma,Helvetica,Sans-serif; font-size:10pt; }
+			div.container { background-image:url(body.png); border: 1px solid #000000; border-top:none;
+			-moz-border-radius-bottomleft:16px;
+			-moz-border-radius-bottomright:16px;
+			-webkit-border-bottom-left-radius:16px;
+			-webkit-border-bottom-right-radius:16px; }
+
+			div.rainbowcontainer { overflow:hidden; padding: 0px 8px 8px 8px; border: 1px solid #98b3cd; border-top:none; -moz-border-radius-bottomleft:16px;
+			-moz-border-radius-bottomright:16px;
+			-webkit-border-bottom-left-radius:16px;
+			-webkit-border-bottom-right-radius:16px;
+background-image:url('supergay.png'); background-repeat:no-repeat;			}
+
+			.big { font-size:22px; font-weight:bold; }
+			a { color:#E87EE1; text-decoration:none; }
+			a:hover { text-decoration:underline; }
+			h1 { float:left; margin:16px; padding:8px;  }
+			.clear { clear:both; }
+			.nursie { font-size:44pt; }
+			.left { float:left; }
+			.right { float:right; }
+			.absolute { position:absolute; }
+			.fixed { position:fixed; }
+			.centered { text-align:center }
+			.duplicated { position:fixed; z-index:44; }
+			.duplicate { position:absolute; display:none }
+			.sparkles { background-image:url(sparkle-tile.gif); }
+			.news { background-color: rgba(0,0,0,0.8); color:#FFA6C9; text-shadow: #000 2px 2px 0px; padding:22px;
+					border-radius:16px;
+					border:1px dotted #fff; }
+			
+			.boxed { background-color: rgba(0,0,0,0.44); font-size:14pt; text-shadow: #000 2px 1px 0px; padding:8px;
+					border-radius:16px;
+					border:1px dotted #fff; }
+					
+			.boxed a { color:#FFF }
+			
+			.boxed img { padding:4px; }
+
+					
+			.onTop { z-index:1488; }
+			
+			#oldnav { width:600px; height:160px; overflow:hidden; position:relative; }
+			#oldnav img { position:absolute }
+		</style>
+		
+		<script>
+			function bounce(element)
+			{
+				element.animate({'top': 644, 'left':244}, 1244, 'linear', function() { bounce2($(this)); });
+			}
+			
+			function bounce2(element)
+			{
+				element.animate({'top': 244, 'left':844}, 1488, 'linear', function() {  bounce3($(this)); });
+			}
+			
+			function bounce3(element)
+			{
+				element.animate({'top': 44, 'left':344}, 1544, 'linear', function() { bounce($(this)); });
+			}
+		
+		
+			var zindex = 0;
+			
+			function oldnav(element)
+			{
+				var random=Math.ceil(Math.random()*20);
+				
+				if(random == 9)
+				{
+					zindex++;
+					element.find('img#'+random).css('z-index', zindex);
+
+					random=Math.ceil(Math.random()*8);
+					
+					zindex++;
+					element.find('img#'+random).css('z-index', zindex);
+				}
+				else
+				{
+					if(element.find('img#'+random).length)
+					{
+						//var zindex = parseInt(element.find('img#'+random).css('z-index'));
+						zindex++;
+						// Also
+						// Cocks
+						var randOpacity = Math.random();
+						element.find('img#'+random).css({'z-index': zindex, 'opacity': randOpacity});
+						//$('.typical').('opacity', halfRandOpacity);
+						
+						
+					}
+					else
+					{
+						var randOpacity = Math.random();
+					
+						element.append("<img id='"+random+"' src='glitch-logo/"+random+".png' style='opacity:"+randOpacity+"'>");
+						//
+						// Also
+					}
+				}
+				
+				setTimeout("oldnav($('#oldnav'))", 1000);
+				//element.animate();
+			}
+			
+			$(document).ready(function()
+			{
+				$('.container').css('width', parseInt($('.container').css('width')) - 420);
+			
+				$(window).scroll(function()
+				{
+					var duplicate = $('.duplicated').clone();
+					duplicate.removeClass('duplicated');
+					duplicate.addClass('duplicate');
+					
+					var offset = $('.duplicated').offset();
+					duplicate.css('top', offset.top * (Math.random()*2));
+					duplicate.css('left', offset.left * (Math.random()*2));
+					
+					duplicate.appendTo('body');
+					
+					var randomRed = Math.ceil(Math.random() * 254);
+					var randomBlue = Math.ceil(Math.random() * 254);
+					var randomGreen = Math.ceil(Math.random() * 254);
+					var randomOpacity = Math.random();
+					
+					duplicate.css('background-color', 'rgba('+randomRed+','+randomBlue+','+randomGreen+','+randomOpacity+')');
+					
+					
+					duplicate.find('img').load(function()
+					{
+						duplicate.fadeIn().delay(Math.random() * 2488).fadeOut(); 
+					});
+					
+					//.delay(1000).hide(); // .delay(1000).remove();
+				});
+			
+				bounce($('#newfish'));
+				$('body').append(" Totally.");
+				
+				oldnav($('#oldnav'));
+			});
+		</script>
+	</head>
+
+	<body bgcolor="white" text="black">
+		<div class='container'>
+			<div class='rainbowcontainer'>
+				<div class='absolute typical' style='top:-36; left:0;'>
+					<img src='typical-wetfish.jpg'>
+				</div>
+			
+			
+				<div class='right'>
+					Hi guys, wetfish is on a new server now. We're actually paying for hosting. xD
+				</div>
+				
+				<div style='clear:right'></div>
+			
+
+			
+				<div id='oldnav'>
+					<img src='oldfish.png' id='9'>
+				</div>
+			
+				<center><h1>Welcome to wetfish.net xD!!</h1>
+
+				<div class='big'>
+				by the way...
+				</div>
+
+				<div class='fixed boxed duplicated centered' style='top:270px; left:420px;'>
+					<a href='https://wetfish.net/chat/' target='_blank'>
+						Click on this cool fucking cat <br />
+						<img src='cool-cat.jpg' style='width:200px'><br />
+						to join the wetfish cool chat
+					</a>
+				</div>
+				
+				<div style='top:244px; left:24px; padding:44px;' class='big absolute sparkles'>
+					hey guys what's<br />
+					going on this is<br />
+					wetfish (again)
+				</div>
+				
+				<div style='top:192px; left:64px; padding:24px;' id='newfish' class='big absolute sparkles'>
+					weclome to denverfish<br />
+					the new wetfish server
+				</div>
+				
+				<div class='absolute news' style='text-align:left; width:400px; top:20px; right:20px;'>
+					<h2>Hello and Welcome<br />
+					This is the Wetfish Newsroom</h2>
+					<hr/>
+					Uhhhh, wetfish got DDoSed in some internet drama. We're on a new server now. Cool story right?
+				</div>
+				
+				Check out the  <a href='https://www.corvid.tk/' target='_blank' class='big'>coolest javascript sperm ever</a> lolllllll
+
+				
+				<br /><br /><br /><br />
+				<br /><br /><br /><br />
+				<br /><br /><br /><br />
+				<br /><br /><br /><br />
+				
+					<div class='clear big'>
+						new links
+					</div>
+				<h1><a href="/newfish/" target="_blank">wait a minute what happened to wetfish</a></h1> <div class='left'>wetfish server at colo4dalas hacked and seized in FBI LuulzSec investigtion</div>
+				<h1><a href="/kayimbo/" target="_blank">kayimbo's music</a></h1>
+
+					<div class='clear big'>
+						old links
+					</div>
+				<h1><a href="https://blog.wetfish.net/" target="_blank">Wetfish Blog</a></h1>
+				<h1><a href="https://wiki.wetfish.net/" target="_blank">Wetfish Wiki</a></h1>
+				<h1><a href="https://click.wetfish.net/" target="_blank">Clickfish</a></h1>
+				<h1><a href="https://glitch.wetfish.net/?url=https://25.media.tumblr.com/tumblr_llsexjU6x01qa68j2o1_500.gif&auto=true&interval=888" target="_blank">Glitchdog</a></h1>
+
+				</center>
+				<br /><br /><br />
+				
+						
+			</div> <!-- Close the outside -->
+		</div>
+	</body>
+</html>

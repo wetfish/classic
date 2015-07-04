@@ -53,6 +53,9 @@
 
             $(document).ready(function()
             {
+                // A count of errors to prevent reloading images forever
+                var errors = 0;
+                
                 $('form').on('submit glitch', function(event)
                 {
                     event.preventDefault();
@@ -75,7 +78,33 @@
                     $(img).on('load', function(event)
                     {
                         $(this).addClass('fadein');
+
+                        // Reset error count if the image is displayed successfully
+                        errors = 0;
                     });
+
+                    $(img).on('error', function(event)
+                    {
+                        // If there were too many errors
+                        if(errors >= 3)
+                        {
+                            errors = 0;
+                            $('.front').html('Error loading image, unable to display after 3 attempts.');
+                            return;
+                        }
+
+                        // Remove the broken image
+                        $('.front').html('');
+                        
+                        // If there was an error, resubmit the form
+                        setTimeout(function()
+                        {
+                            $('form').trigger('glitch');
+                        }, errors * 100);
+
+                        errors++;
+                    });
+
                 });
 
                 $('.start-auto').on('click', function(event)

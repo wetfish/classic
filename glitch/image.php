@@ -9,33 +9,47 @@ function SuperPrint($Array)
 
 if($_GET['url'])
 {
-    $URL = parse_url($_GET['url']);
+    $url = parse_url($_GET['url']);
     
-    if($URL['host'])
+    if($url['host'])
     {
-        $File = pathinfo($URL['path']);
+        $file = pathinfo($url['path']);
         
-        if(in_array(strtolower($File['extension']), array('jpg', 'jpeg', 'png', 'bmp', 'gif', 'tif', 'tiff')))
+        if(in_array(strtolower($file['extension']), array('jpg', 'jpeg', 'png', 'bmp', 'gif', 'tif', 'tiff')))
         {
-            $Location = tempnam('/tmp', 'Glitch_');
-            $Data = @file_get_contents($_GET['url']);
-            file_put_contents($Location, $Data);
-    
-            $Type = mime_content_type($Location);
-            Header("Content-type: $Type");
-            
-            $Length = strlen($Data);
-            $Corruption = rand(3, $Length / rand(3, $Length / 3));
-    
-            while($Corruption > 0)
-            {
-                $Where = rand(0, $Length);
-                $Data[$Where] = rand(0, $Length);
+            // Hash the image URL to save cached versions
+            $hash = hash('sha256', $_GET['url']);
+            $file = "/tmp/glitch_{$hash}";
 
-                $Corruption--;
+            // If this file is already saved
+            if(file_exists($file))
+            {
+                // Get the contents from the temporary file
+                $data = file_get_contents("/tmp/glitch_{$hash}");
+            }
+
+            // Otherwise, save the file
+            else
+            {
+                $data = file_get_contents($_GET['url']);
+                file_put_contents("/tmp/glitch_{$hash}", $data);
+            }
+                
+            $type = mime_content_type($file);
+            Header("Content-type: $type");
+            
+            $length = strlen($data);
+            $corruption = rand(3, $length / rand(3, $length / 3));
+    
+            while($corruption > 0)
+            {
+                $where = rand(0, $length);
+                $data[$where] = rand(0, $length);
+
+                $corruption--;
             }
             
-            echo $Data;
+            echo $data;
         }
     }
 }

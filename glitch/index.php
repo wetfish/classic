@@ -1,120 +1,139 @@
 <html>
-	<head>
-		<title>Welcome to HTML</title>
-			
-		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'></script>
-		<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js'></script>
-		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/base/jquery-ui.css" type="text/css" />
-		
-		<style>
-			body { background-color:#000; color:#eee;
-					font-family:tahoma; }
-			
-			#glitch-url { width: 600px; }
-			#images { position: relative; }
-			.glitched { position: absolute;
-						top:0;
-						left:0;
-						display:none; }						
-		</style>
-		
-		<script>
-			var glitchCount = 0;
-			var interval = <?php if($_GET['interval']) { echo $_GET['interval']; } else { echo '3000'; } ?>;
-			var autoGlitch;
+    <head>
+        <title>Welcome to HTML</title>
+        
+        <script src="node_modules/wetfish-basic/dist/basic.js"></script>
+        
+        <style>
+            body {
+                background-color:#000;
+                color:#eee;
+                font-family:tahoma, sans-serif;
+            }
+            
+            .url {
+                width: 600px;
+            }
 
-		
-			function superFade(element)
-			{
-				element.fadeIn();
-				$('.glitched[count!="'+glitchCount+'"]').fadeOut(function()
-				{
-					$(this).remove();
-				});
-			}
-		
-			function glitch()
-			{
-				glitchCount++;
-				$('#images').append("<img class='glitched' count='"+glitchCount+"' src='image.php?url="+$('#glitch-url').val()+"&count="+glitchCount+"' onload='superFade($(this));' />");
-			}
-			
-			function autoGlitcher()
-			{
-				autoGlitch = setInterval('glitch()', interval);
-				$('#glitch-me').append("<input type='button' value='Stop' id='stop' />");
-			}
-		
-			function stop()
-			{
-				clearInterval(autoGlitch)
-				$('#stop').remove();
-			}
-		
-			$(document).ready(function()
-			{
-			
-				$('#glitch-me').submit(function(event)
-				{
-					event.preventDefault();
-					glitch();
-				});			
-			
-				$('#auto-glitch').click(function()
-				{
-					autoGlitcher();
-				});
-				
-				$('#stop').live('click', function()
-				{
-					stop();
-				});
-				
-				$('#interval').click(function()
-				{
-					interval = prompt("How long would you like to wait? (in miliseconds)");
-				
-					stop();
-					autoGlitcher();
-				});
-				
-				<?php 
-				
-				if($_GET['url'])
-					echo "glitch();";
+            .images {
+                position: relative;
+            }
 
-				if($_GET['auto'])
-					echo "autoGlitcher();";
-					
-				?>
-			});
-		</script>
-	</head>
-	
-	<body>
-		<h1><?php echo Glitch("What's the URL?"); ?></h1>
+            .front, .back {
+                position: absolute;
+                top:0;
+                left:0;
+            }
 
-		<form action='image.php' id='glitch-me'>
-			<input type='text' name='url' id='glitch-url' value='<?php echo $_GET['url']; ?>' />
-			<input type='submit' value='Glitch' />
-			<input type='button' value='Auto Glitch' id='auto-glitch' />
-			<input type='button' value='Set Interval' id='interval' />		
-		</form>
+            .front {
+                z-index: 1;
+            }
 
-		<div id='images'>
-			<div id='glitched'></div>
-		</div>
-	</body>
+            .front img, .back img {
+                transition: 0.5s all;
+                opacity: 0;
+            }
+
+            .fadein {
+                opacity: 1 !important;
+            }
+
+            .fadeout {
+                opacity: 0 !important;
+            }
+
+            .stop-auto {
+                display: none;
+            }
+        </style>
+        
+        <script>
+            var interval = <?php if($_GET['interval']) { echo $_GET['interval']; } else { echo '3000'; } ?>;
+            var auto;
+
+            $(document).ready(function()
+            {
+                $('form').on('submit glitch', function(event)
+                {
+                    event.preventDefault();
+
+                    var url = $('.url').value();
+
+                    var img = document.createElement('img');
+                    $(img).attr('src', "image.php?url="+url+"&rand="+Math.random());
+
+                    if($('.front img').el.length)
+                    {
+                        // Move the current image to the back
+                        $('.back').html('');
+                        $('.back').el[0].appendChild($('.front img').el[0]);
+                    }
+
+                    $('.front').html('');
+                    $('.front').el[0].appendChild(img);
+
+                    $(img).on('load', function(event)
+                    {
+                        $(this).addClass('fadein');
+                    });
+                });
+
+                $('.start-auto').on('click', function(event)
+                {
+                    // Don't start another interval if we're already auto-glitching
+                    if(auto) return;
+                    
+                    $('.stop-auto').style({display: 'inline'});
+
+                    auto = setInterval(function()
+                    {
+                        $('form').trigger('glitch');
+                    }, interval);
+                });
+
+                $('.set-interval').on('click', function(event)
+                {
+                    interval = prompt("How long would you like to wait between glitches? (in miliseconds)");
+
+                    // Reset autoglitch
+                    $('.stop-auto').trigger('click');
+                    $('.start-auto').trigger('click');
+                });
+
+                $('.stop-auto').on('click', function(event)
+                {
+                    $(this).style({display: 'none'});
+                    clearInterval(auto);
+                    auto = false;
+                });
+
+                <?php
+                
+                if($_GET['url'])
+                    echo "$('form').trigger('glitch');";
+
+                if($_GET['auto'])
+                    echo "$('.start-auto').trigger('click');";
+
+                ?>
+            });
+        </script>
+    </head>
+    
+    <body>
+        <h1>What's the URL?</h1>
+
+        <form action="image.php">
+            <input type="text" name="url" class="url" value="<?php echo $_GET['url']; ?>" />
+            <input type="submit" value="Glitch" />
+            <input type="button" value="Auto Glitch" class="start-auto" />
+            <input type="button" value="Set Interval" class="set-interval" />
+            <input type="button" value="Stop" class="stop-auto" />
+        </form>
+
+        <div class="images">
+            <div class="front"></div>
+            <div class="back"></div>
+        </div>
+    </body>
 </html>
-
-<?php
-
-function Glitch($What)
-{
-	# Get string length
-	# Do what mirc does
-	
-	return $What;	
-}
-
-?>

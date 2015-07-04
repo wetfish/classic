@@ -5,10 +5,22 @@
         <script src="node_modules/wetfish-basic/dist/basic.js"></script>
         
         <style>
+            html, body {
+                height: 100%;
+                margin-bottom: 250px;
+            }
+            
             body {
                 background-color:#000;
                 color:#eee;
                 font-family:tahoma, sans-serif;
+            }
+
+            .menu {
+                position: fixed;
+                z-index: 10;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.8);
             }
             
             .url {
@@ -23,6 +35,8 @@
                 position: absolute;
                 top:0;
                 left:0;
+                bottom: 0;
+                right: 0;
             }
 
             .front {
@@ -150,15 +164,17 @@
     </head>
     
     <body>
-        <h1>What's the URL?</h1>
+        <div class="menu">
+            <h1>What's the URL?</h1>
 
-        <form action="image.php">
-            <input type="text" name="url" class="url" value="<?php echo $_GET['url']; ?>" />
-            <input type="submit" value="Glitch" />
-            <input type="button" value="Auto Glitch" class="start-auto" />
-            <input type="button" value="Set Interval" class="set-interval" />
-            <input type="button" value="Stop" class="stop-auto" />
-        </form>
+            <form action="image.php">
+                <input type="text" name="url" class="url" value="<?php echo $_GET['url']; ?>" />
+                <input type="submit" value="Glitch" />
+                <input type="button" value="Auto Glitch" class="start-auto" />
+                <input type="button" value="Set Interval" class="set-interval" />
+                <input type="button" value="Stop" class="stop-auto" />
+            </form>
+        </div>
 
         <div class="images">
             <div class="front"></div>

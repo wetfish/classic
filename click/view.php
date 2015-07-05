@@ -77,8 +77,7 @@ require('include.php');
 	
 <?php
 
-$ID = stripslashes($_GET['id']);
-$ID = filter_var($ID, FILTER_SANITIZE_SPECIAL_CHARS);
+$ID = replace_input($_GET['id']);
 
 $Query = mysql_query("Select `Page`,`Time`,`Data`,`Deleted`
 						from `Pages`
@@ -107,7 +106,7 @@ if($Time and (!$Deleted or $_SESSION['Click']['User']))
 		echo "&emsp;<a href='/login.php' id='click-login'>Login</a>";
 	}
 	
-    $Data = replace($Data);
+    $Data = replace_output($Data);
 	echo "&emsp;<a href='/$Page' id='click-thread'>View Thread</a>";
 	echo "<!-- Close Click Nav --> </div>";
 	echo "<!-- Close Click Header --> <hr /></div>";

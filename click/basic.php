@@ -3,9 +3,7 @@
 session_start();
 require('include.php');
 
-
-$ID = stripslashes($_GET['id']);
-$ID = filter_var($ID, FILTER_SANITIZE_SPECIAL_CHARS);
+$ID = replace_input($_GET['id']);
 
 $Query = mysql_query("Select `Page`,`Time`,`Data`,`Deleted`
 						from `Pages`
@@ -16,7 +14,7 @@ list($Page, $Time, $Data, $Deleted) = mysql_fetch_array($Query);
 
 if($Time and (!$Deleted))
 {
-    echo replace($Data);
+    echo replace_output($Data);
 }
 
 ?>

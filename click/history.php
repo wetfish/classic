@@ -9,8 +9,7 @@ if($_SESSION['Timezone'])
 	date_default_timezone_set($_SESSION['Timezone']);
 
 
-$Page = stripslashes($_GET['page']);
-$Page = filter_var($Page, FILTER_SANITIZE_SPECIAL_CHARS);
+$Page = replace_input($_GET['page']);
 
 $Query = "Select `ID`,`Time`,`Data`
 			from `Pages` 
@@ -52,7 +51,7 @@ if($Results)
 			}
 		}
 		
-        echo replace($Data);
+        echo replace_output($Data);
 		echo "</div>";	
 	}
 	

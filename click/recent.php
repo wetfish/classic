@@ -121,7 +121,7 @@
 						}
 					}
 					
-                    echo replace($Data);
+                    echo replace_output($Data);
 					echo "</div>";
 				}
 				

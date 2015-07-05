@@ -25,15 +25,13 @@ if(empty($_SESSION['Timezone']))
 
 #die("hi");
 
-$Page = stripslashes($_GET['page']);
-$Page = filter_var($Page, FILTER_SANITIZE_SPECIAL_CHARS);
+$Page = replace_input($_GET['page']);
 
 # I should probably get around to changing page to path.
 # That way derp can be page.
 # Maybe even revamp the database for more statistical information.
 
-$Derp = stripslashes($_GET['p']);
-$Derp = filter_var($Derp, FILTER_SANITIZE_SPECIAL_CHARS);
+$Derp = replace_input($_GET['p']);
 if(empty($Derp))
 	$Derp = 1;
 

@@ -4,8 +4,7 @@ require('include.php');
 
 if($_POST)
 {
-	$Page = stripslashes($_GET['page']);
-	$Page = filter_var($Page, FILTER_SANITIZE_SPECIAL_CHARS);
+    $Page = replace_input($_GET['page']);
 	$Time = time();
 	$IP = $_SERVER['REMOTE_ADDR'];
 	$Data = stripslashes($_POST['data']);

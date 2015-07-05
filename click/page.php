@@ -1,6 +1,6 @@
 <?php
 
-require('mysql.php');
+require('include.php');
 
 $Page = stripslashes($_GET['page']);
 $Page = filter_var($Page, FILTER_SANITIZE_SPECIAL_CHARS);

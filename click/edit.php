@@ -1,6 +1,6 @@
 <?php
 
-require('mysql.php');
+require('include.php');
 
 if($_POST)
 {

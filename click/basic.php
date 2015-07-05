@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('mysql.php');
+require('include.php');
 
 
 $ID = stripslashes($_GET['id']);
@@ -16,7 +16,7 @@ list($Page, $Time, $Data, $Deleted) = mysql_fetch_array($Query);
 
 if($Time and (!$Deleted))
 {
-	echo str_ireplace('icanhazchat.com/pibdgaf', 'wetfish.net', $Data);
+    echo replace($Data);
 }
 
 ?>

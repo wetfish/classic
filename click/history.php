@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('mysql.php');
+require('include.php');
 require('paginate.php');
 
 
@@ -52,7 +52,7 @@ if($Results)
 			}
 		}
 		
-		echo str_ireplace('icanhazchat.com/pibdgaf', 'wetfish.net', $Data);
+        echo replace($Data);
 		echo "</div>";	
 	}
 	

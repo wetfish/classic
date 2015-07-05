@@ -8,7 +8,7 @@
 #die('wat');
 
 session_start();
-require('mysql.php');
+require('include.php');
 
 #die("woah");
 

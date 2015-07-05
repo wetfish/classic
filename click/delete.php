@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('mysql.php');
+require('include.php');
 
 if(in_array($_SESSION['Click']['User'], array('click', 'rachel', 'wetfish', 'guthbrandr')))
 {

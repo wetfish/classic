@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require('mysql.php');
+require('include.php');
 
 
 if($_SESSION['Timezone'])
@@ -38,8 +38,8 @@ if($ID)
 				$Data = str_replace($URL, "<a href='$URL' target='_blank'>$URL</a>", $Data);
 		}
 	}
-	
-	echo str_ireplace('icanhazchat.com/pibdgaf', 'wetfish.net', $Data);
+
+    echo replace($Data);
 }
 
 ?>

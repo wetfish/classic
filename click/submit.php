@@ -1,6 +1,6 @@
 <?php
 
-require('mysql.php');
+require('include.php');
 
 //echo "where is the post";
 //echo ini_get('post_max_size'); 

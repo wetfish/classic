@@ -1,16 +1,16 @@
 <?php
 
 session_start();
-require('mysql.php');
+require('include.php');
 
 ?>
 
 <html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
-		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'></script>
-		<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js'></script>
-		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css" /> 
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js'></script>
+		<script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js'></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css" /> 
 
 		<style>
 			#click-header { font-family: Tahoma,Helvetica,Sans-serif; font-size:10pt; }
@@ -107,7 +107,7 @@ if($Time and (!$Deleted or $_SESSION['Click']['User']))
 		echo "&emsp;<a href='/login.php' id='click-login'>Login</a>";
 	}
 	
-	$Data = str_ireplace('icanhazchat.com/pibdgaf', 'wetfish.net',  $Data);
+    $Data = replace($Data);
 	echo "&emsp;<a href='/$Page' id='click-thread'>View Thread</a>";
 	echo "<!-- Close Click Nav --> </div>";
 	echo "<!-- Close Click Header --> <hr /></div>";
@@ -119,7 +119,7 @@ if($Time and (!$Deleted or $_SESSION['Click']['User']))
 	
 	<center>
 		<iframe id='leader-friend' 
-				src='http://blog.wetfish.net/friendship/leader.html'
+				src='https://ads.wetfish.net/friendship/leader.html'
 				style='width:750px; height:115px; border:0; outline:0; overflow:hidden;'
 				scrolling="no"></iframe>
 	</center>

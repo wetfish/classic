@@ -53,15 +53,7 @@
 	</head>
 	
 	<body>
-		<div class='superborder'>
-			<div class='supernav'>
-				<a href='http://wetfish.net'>Wetfish</a> |
-				<a href='http://stats.wetfish.net'>Recently on the Fish</a> |
-				<a href='http://projects.wetfish.net'>Projects</a> |
-				<a href='http://todo.wetfish.net'>Things TODO</a> |
-				<a href='http://wiki.wetfish.net'>The <b>New</b> Wiki</a>
-			</div>
-		</div>
+		<?php include("nav.php"); ?>
 		
 		<div class='body'>
 			<a href='/'>Click Home</a> |

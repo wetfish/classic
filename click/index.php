@@ -35,6 +35,10 @@ $Derp = replace_input($_GET['p']);
 if(empty($Derp))
 	$Derp = 1;
 
+ob_start();
+include("nav.php");
+$Nav = ob_get_contents();
+ob_end_clean();
 
 require('template.php');
 echo Template('template.html');

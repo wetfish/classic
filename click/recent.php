@@ -75,7 +75,7 @@
 						order by `ID`
 						desc";
 			
-			list($Results, $Links) = Paginate($Query, 50, $_GET['p'], $_SERVER['QUERY_STRING']);
+			list($Results, $Links) = Paginate($Query, 25, $_GET['p'], $_SERVER['QUERY_STRING']);
 
 			if($Results)
 			{

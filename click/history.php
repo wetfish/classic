@@ -18,7 +18,7 @@ $Query = "Select `ID`,`Time`,`Data`
 			order by `ID`
 			desc";
 
-list($Results, $Links) = Paginate($Query, 100, $_GET['p'], $_SERVER['QUERY_STRING'], 1);
+list($Results, $Links) = Paginate($Query, 25, $_GET['p'], $_SERVER['QUERY_STRING'], 1);
 
 if($Results)
 {

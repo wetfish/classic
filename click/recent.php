@@ -18,6 +18,8 @@
 				border-bottom: 1px solid #000;
 				border-right: 1px solid #000;
 				border-left: 1px solid #000;
+                border-bottom-right-radius: 8px;
+                border-bottom-left-radius: 8px; 
 				-moz-border-radius-bottomleft:8px;
 				-moz-border-radius-bottomright:8px;
 				-webkit-border-bottom-left-radius:8px;
@@ -31,6 +33,8 @@
 				border-bottom: 1px solid #98b3cd;
 				border-right: 1px solid #98b3cd;
 				border-left: 1px solid #98b3cd;
+                border-bottom-right-radius: 8px;
+                border-bottom-left-radius: 8px;
 				-moz-border-radius-bottomleft:8px;
 				-moz-border-radius-bottomright:8px;
 				-webkit-border-bottom-left-radius:8px;

@@ -345,6 +345,11 @@ table.gibberish td {
   border: 1px solid #98b3cd;
 }
 
+table.gibberish td {
+    padding: 0.5em;
+}
+
+
 CSS;
 
 ?>

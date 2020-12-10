@@ -3,9 +3,7 @@ services:
 
   #PHP Service
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: fishnet/wiki:initial
     container_name: wiki-php
     restart: unless-stopped
     tty: true

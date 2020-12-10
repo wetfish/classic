@@ -2,10 +2,9 @@
 
 // Copy this file to "config.php" and change the following values
 
-define("MYSQL_HOST", "localhost");
-define("MYSQL_USER", "username");
+define("MYSQL_USER", "wiki");
 define("MYSQL_PASSWORD", "password");
-define("MYSQL_DATABASE", "database");
+define("MYSQL_DATABASE", "wiki");
 
 // Password used to avoid captchas via the login page
 define("LOGIN_PASSWORD", "password"); 
@@ -22,5 +21,8 @@ define("RECAPTCHA_PRIVATE", "private api key");
 
 // Secret regex to bypass captchas
 define("CAPTCHA_BYPASS", false);
+
+// Leave this as is so the docker containers integrate correctly
+define("MYSQL_HOST", "db");
 
 ?>

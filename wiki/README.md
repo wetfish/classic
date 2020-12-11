@@ -3,7 +3,7 @@
 1. Create a **.env** based on `.env.example`
 2. Create a **src/config.php** based on `src/config.example.php`, as well as **src/ban.php** based on `src/ban.example.php`
 3. Run ```docker-compose up -d```
-4. Run ```docker-compose exec app npm install```
+4. Run ```docker-compose exec app npm install --prefix src```
 
 ## To get search, tags, etc to work
 

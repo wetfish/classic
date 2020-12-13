@@ -2,8 +2,8 @@ version: '3'
 services:
 
   #PHP Service
-  app:
-    image: fishnet/wiki:initial
+  wiki:
+    image: fishnet/wiki
     container_name: wiki-php
     restart: unless-stopped
     tty: true
@@ -34,7 +34,7 @@ services:
       - app-network
     depends_on:
       - db
-      - app
+      - wiki 
 
   ##SSL-enabled Nginx Service; uncomment to use
   ##Make sure to comment out the above webserver block
@@ -63,7 +63,7 @@ services:
   #    - app-network
   #  depends_on:
   #    - db
-  #    - app
+  #    - wiki
 
   # MySQL Service
   db:

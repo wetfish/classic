@@ -3,10 +3,7 @@ services:
 
   #PHP Service
   click:
-    #image: fishnet/click
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: fishnet/click
     container_name: click-php
     restart: unless-stopped
     tty: true
@@ -16,7 +13,6 @@ services:
     volumes:
       - .:/var/www
       - ./config/php.ini:/usr/local/etc/php/conf.d/settings.ini
-      - ./config/php.conf:/usr/local/etc/php-fpm.d/zz-php.conf
       - node_modules:/var/www/node_modules
     networks:
       - app-network

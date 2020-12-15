@@ -5,7 +5,7 @@ WORKDIR /var/www
 RUN apt-get update && apt-get install -y \
     apt-utils \
     git \
-    && docker-php-ext-install mysqli mysql exif 
+    && docker-php-ext-install mysqli mysql
 
 RUN useradd fishy
 USER fishy

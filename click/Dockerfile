@@ -1,0 +1,15 @@
+FROM php:5.6-fpm-stretch
+
+WORKDIR /var/www
+
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    git \
+    && docker-php-ext-install mysqli mysql exif 
+
+RUN useradd fishy
+USER fishy
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]

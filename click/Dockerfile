@@ -2,10 +2,7 @@ FROM php:5.6-fpm-stretch
 
 WORKDIR /var/www
 
-RUN apt-get update && apt-get install -y \
-    apt-utils \
-    git \
-    && docker-php-ext-install mysqli mysql
+RUN docker-php-ext-install mysqli mysql
 
 RUN useradd fishy
 USER fishy

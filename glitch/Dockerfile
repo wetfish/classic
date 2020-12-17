@@ -11,6 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -\
     && apt-get clean
 
 COPY --chown=fishy:fishy . /var/www 
+
 USER fishy
 RUN npm install
 

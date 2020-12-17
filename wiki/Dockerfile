@@ -13,7 +13,9 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -\
     && apt-get install -y nodejs
 
-RUN useradd fishy
+RUN groupadd -g 1000 fishy
+RUN useradd -u 1000 -g fishy fishy
+COPY --chown=fishy:fishy . /var/www
 USER fishy
 
 # Expose port 9000 and start php-fpm server

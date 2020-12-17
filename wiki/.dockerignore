@@ -1,0 +1,6 @@
+echo config/
+docker-compose.yml
+node_modules/
+README.md
+src/schema.sql
+src/node_modules/

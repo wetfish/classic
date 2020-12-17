@@ -3,6 +3,5 @@ docker-compose.yml
 Dockerfile
 .env
 .env.example
-package.json
 package-lock.json
 README.md

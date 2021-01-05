@@ -1,0 +1,6 @@
+.env
+.env.example
+schema.sql
+Dockerfile
+docker-compose.yml
+config/

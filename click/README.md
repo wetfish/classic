@@ -3,4 +3,4 @@
 ## Running with docker
 
 1. Create a **.env** based on `.env.example`
-2. Run ```docker-compose up -d```
+2. Run ```docker-compose up```

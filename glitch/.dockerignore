@@ -1,0 +1,7 @@
+config/
+docker-compose.yml
+Dockerfile
+.env
+.env.example
+package-lock.json
+README.md

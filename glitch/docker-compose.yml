@@ -16,8 +16,6 @@ services:
       - ./config/php.ini:/usr/local/etc/php/conf.d/settings.ini
     networks:
       - glitch-network
-    depends_on:
-      - db
 
   webserver:
     image: nginx:alpine
@@ -32,25 +30,7 @@ services:
     networks:
       - glitch-network
     depends_on:
-      - db
       - glitch 
-
-  # MySQL Service
-  db:
-    image: mariadb
-    container_name: glitch-mysql
-    restart: unless-stopped
-    command: --sql_mode=""
-    environment:
-      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-      MYSQL_DATABASE: $DB_DATABASE 
-      MYSQL_USER: $DB_USERNAME 
-      MYSQL_PASSWORD: $DB_PASSWORD
-    volumes:
-      - ./schema.sql:/docker-entrypoint-initdb.d/setup.sql
-      - dbdata:/var/lib/mysql
-    networks:
-      - glitch-network
 
 #Docker Networks
 networks:

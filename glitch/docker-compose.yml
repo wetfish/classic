@@ -37,7 +37,5 @@ networks:
 
 #Volumes
 volumes:
-    dbdata:
-      driver: local
     node_modules:
       driver: local

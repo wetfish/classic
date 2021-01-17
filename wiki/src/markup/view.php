@@ -429,7 +429,7 @@ function view_replacements($tag, $content)
                     $URL['query'] = implode('&', $Query);
                 }
 
-                if(preg_match('/^.*\.?wetfish.net$/i', $URL['host']))
+                if(preg_match("/$site/i", $URL['host']))
                 {
                     // Prepend uuid with a string to ensure it's valid
                     $ID = "embed-" . uuid();

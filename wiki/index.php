@@ -90,7 +90,6 @@ if($Path == "home")
     $Path = "";
 
 $Title[] = "wetfish.net";
-$Site = getenv('SITE_URL');
 
 $Content = array();
 $Content['UserNav'] = new Navigation;

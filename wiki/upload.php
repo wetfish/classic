@@ -24,52 +24,50 @@ if($_FILES)
     }
     else
     {
-	// Set extension on mime type
-	// If Extension is unset after switch, blow up
-	$Mime = mime_content_type($Image['tmp_name']);
-	switch($Mime){
-		case "image/jpg":
-			$Extension = "jpg";
-			break;
-		case "image/jpeg":
-			$Extension = "jpeg";
-			break;
-		case "image/gif":
-			$Extension = "gif";
-			break;
-		case "image/png":
-			$Extension = "png";
-			break;
-		case "audio/mp3":
-			$Extension = "mp3";
-			break;
-		case "audio/webm":
-		case "video/webm":
-			$Extension = "webm";
-			break;
-		case "video/mp4":
-			$Extension = "mp4";
-			break;
-		case "audio/midi":
-		case "audio/xmidi":
-			$Extension = "mid";
-			break;
-		case "image/svg+xml":
-			$Extension = "svg";
-			break;
-		default:
-			// Catch all for the various text types that may end up being parsed, accept them as text files
-			if(preg_match('/text\/.*/i', $Mime))
-				$Extension = "txt";
-			else
-				echo "HACKER!!!!!!!!!!!!!";
-	}
-	
-	$Filename = uuid();
-	while(file_exists("upload/$Filename.$Extension"))
-        {
-            $Filename = uuid();
+        $Mime = mime_content_type($Image['tmp_name']);
+        switch($Mime){
+            case "image/jpg":
+                $Extension = "jpg";
+                break;
+            case "image/jpeg":
+                $Extension = "jpeg";
+                break;
+            case "image/gif":
+                $Extension = "gif";
+                break;
+            case "image/png":
+                $Extension = "png";
+                break;
+            case "audio/mp3":
+                $Extension = "mp3";
+                break;
+            case "audio/webm":
+            case "video/webm":
+                $Extension = "webm";
+                break;
+            case "video/mp4":
+                $Extension = "mp4";
+                break;
+            case "audio/midi":
+            case "audio/xmidi":
+                $Extension = "mid";
+                break;
+            case "image/svg+xml":
+                $Extension = "svg";
+                break;
+            default:
+            // Catch all for the various text types that may end up being parsed, accept them as text files
+                if(preg_match('/text\/.*/i', $Mime))
+                    $Extension = "txt";
+                else
+                    echo "HACKER!!!!!!!!!!!!!";
         }
+    
+        $Filename = uuid();
+        while(file_exists("upload/$Filename.$Extension"))
+            {
+                $Filename = uuid();
+            }
 
         move_uploaded_file($Image['tmp_name'], "upload/$Filename.$Extension");
         chmod("upload/$Filename.$Extension", 0644);
@@ -92,7 +90,7 @@ if($_FILES)
             exit;
         }
 
-	$Mime = preg_replace('/[^a-zA-Z0-9].*/', '', $Mime);
+        $Mime = preg_replace('/[^a-zA-Z0-9].*/', '', $Mime);
         echo "<meta http-equiv='refresh' content='2;url=upload/$Filename.$Extension'>$Mime added!";
     }
 }

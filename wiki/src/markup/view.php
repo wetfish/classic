@@ -513,7 +513,20 @@ function view_replacements($tag, $content)
 
                 return $Stuff;
             break;
-
+            case "text":
+                // I mean, I'm not great at this theming 
+                $content = file_get_contents($content);
+                $content = htmlspecialchars($content);
+                return "<pre style='font:monospace; background-color: #222; padding: 0.5rem;'><code>$content</code></pre>";
+            break;
+            case "code":
+                $content = file_get_contents($content);
+		$content = htmlspecialchars($content);
+                return "<link rel=\"stylesheet\" href=\"//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css\">
+                <script src=\"//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js\"></script>
+                <script>hljs.initHighlightingOnLoad()</script>
+                <pre style='margin: -3.5rem 0 -0.5rem 0;'><code>$content</pre></code>";
+            break;
             case "snow":
                 return '<script type="text/javascript" src="/snowstorm.js"></script>';
             break;

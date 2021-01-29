@@ -16,7 +16,9 @@ services:
       - .:/var/www
       - ./config/php.ini:/usr/local/etc/php/conf.d/settings.ini
       - ./config/php.conf:/usr/local/etc/php-fpm.d/zz-php.conf
+      - ./config/config.php:/var/www/src/config.php
       - node_modules:/var/www/node_modules
+      - uploads:/var/www/upload
     networks:
       - app-network
     depends_on:
@@ -30,6 +32,7 @@ services:
     volumes:
       - .:/var/www
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - uploads:/var/www/upload
     networks:
       - app-network
     depends_on:
@@ -92,4 +95,6 @@ volumes:
     dbdata:
       driver: local
     node_modules:
+      driver: local
+    uploads:
       driver: local

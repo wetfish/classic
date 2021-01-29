@@ -5,6 +5,18 @@
 3. Run ```docker-compose up -d```
 4. Run ```docker-compose exec wiki npm install --prefix src```
 
+## If you're working with uploads, an extra step is required
+
+```
+
+docker-compose exec -u root wiki bash
+
+# Inside wiki
+mkdir -p /var/www/upload/thumb
+chown -R fishy:fishy /var/www/upload
+
+```
+
 ## To get search, tags, etc to work
 
 Open your local wiki in a browser, and edit the page source

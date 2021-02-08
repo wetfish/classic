@@ -17,6 +17,8 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -\
 RUN useradd fishy
 USER fishy
 
+COPY --chown=fishy:fishy . /var/www/
+
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 CMD ["php-fpm"]

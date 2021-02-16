@@ -17,7 +17,6 @@ services:
       - ./config/php.ini:/usr/local/etc/php/conf.d/settings.ini
       - ./config/php.conf:/usr/local/etc/php-fpm.d/zz-php.conf
       - ./config/config.php:/var/www/src/config.php
-      - node_modules:/var/www/node_modules
       - uploads:/var/www/upload
     networks:
       - app-network
@@ -93,8 +92,6 @@ networks:
 #Volumes
 volumes:
     dbdata:
-      driver: local
-    node_modules:
       driver: local
     uploads:
       driver: local

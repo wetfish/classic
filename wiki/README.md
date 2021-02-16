@@ -3,7 +3,6 @@
 1. Create a **.env** based on `.env.example`
 2. Create a **src/ban.php** based on `src/ban.example.php`
 3. Run ```docker-compose up -d```
-4. Run ```docker-compose exec wiki npm install --prefix src```
 
 ## If you're working with uploads, an extra step is required
 

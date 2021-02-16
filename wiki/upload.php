@@ -59,8 +59,10 @@ if($_FILES)
             // Catch all for the various text types that may end up being parsed, accept them as text files
                 if(preg_match('/text\/.*/i', $Mime))
                     $Extension = "txt";
-                else
+                else {
                     echo "HACKER!!!!!!!!!!!!!";
+                    return;
+		}
         }
     
         $Filename = uuid();

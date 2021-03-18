@@ -30,11 +30,14 @@ RUN apk add --no-cache \
 ADD ./config/php.conf /usr/local/etc/php-fpm.d/www.conf
 ADD ./config/nginx.conf /etc/nginx/conf.d/default.conf
 ADD ./config/sv/nginx/run /etc/service/nginx/run
+ADD ./config/sv/nginx/finish /etc/service/nginx/finish
 ADD ./config/sv/php/run /etc/service/php/run
+ADD ./config/sv/php/finish /etc/service/php/finish
 
 COPY --chown=fishy:fishy . /var/www
 RUN mkdir -p /var/www/src/node_modules /run/nginx \
 	&& chmod +x /etc/service/php/run /etc/service/nginx/run  \
+	&& chmod +x /etc/service/php/finish /etc/service/nginx/finish \
 	&& npm install --prefix /var/www/src
 
 EXPOSE 8080

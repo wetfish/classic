@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Kill our processes
+pkill -TERM runsvdir

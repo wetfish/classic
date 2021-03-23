@@ -8,7 +8,7 @@
 
 ```
 
-docker-compose exec -u root wiki bash
+docker-compose exec -u root app bash
 
 # Inside wiki
 mkdir -p /var/www/upload/thumb

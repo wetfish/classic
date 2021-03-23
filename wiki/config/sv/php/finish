@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# kill off the nginx
-pkill -TERM runsvdir

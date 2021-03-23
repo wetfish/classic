@@ -1,8 +1,13 @@
-FROM php:5.6-fpm-stretch
+FROM php:5.6-fpm-alpine
 
 WORKDIR /var/www
 
-RUN docker-php-ext-install mysqli mysql
+RUN apk add --no-cache \
+	curl \
+	nginx \
+	&& docker-php-ext-install mysqli mysql \
+	&& curl -o /tmp/s6-overlay
+	
 
 RUN useradd fishy
 USER fishy

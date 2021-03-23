@@ -11,11 +11,12 @@ services:
       - ./.env
     environment: 
       SITE_URL: $SITE_URL
+      MYSQL_USER: $DB_USERNAME
+      MYSQL_PASSWORD: $DB_PASSWORD
     volumes:
       - .:/var/www
       - node_modules:/var/www/src/node_modules
       - ./config/php.ini:/usr/local/etc/php/conf.d/settings.ini
-      - ./config/config.php:/var/www/src/config.php
     networks:
       - app-network
     depends_on:
@@ -33,6 +34,8 @@ services:
       MYSQL_DATABASE: $DB_DATABASE 
       MYSQL_USER: $DB_USERNAME 
       MYSQL_PASSWORD: $DB_PASSWORD
+    ports:
+      - "127.0.0.1:3306:3306"
     volumes:
       - ./src/schema.sql:/docker-entrypoint-initdb.d/setup.sql
       - dbdata:/var/lib/mysql

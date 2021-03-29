@@ -14,8 +14,7 @@ services:
       - ./rootfs/var/www/src/config.php:/var/www/src/config.php
       - node_modules:/var/www/src/node_modules
     environment:
-      # On or Off to show php errors
-      DISPLAY_ERRORS: "On" 
+      DISPLAY_ERRORS: $DIPSLAY_ERRORS 
     networks:
       - app-network
     depends_on:

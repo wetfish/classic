@@ -30,9 +30,8 @@ RUN apk add --no-cache \
 	&& addgroup -S -g 1000 fishy && adduser -u 1000 -S -G fishy fishy
 	
 # Copy files and update perms where necessary
-COPY ./rootfs /
+COPY ./rootfs/ /
 COPY --chown=fishy:fishy . /var/www
-
 
 # Set up some dirs and ownerships, then fetch our node packages
 RUN mkdir -p /var/www/src/node_modules /run/nginx /usr/local/var/log \

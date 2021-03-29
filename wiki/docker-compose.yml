@@ -11,8 +11,11 @@ services:
       - ./.env
     volumes:
       - .:/var/www
+      - ./rootfs/var/www/src/config.php:/var/www/src/config.php
       - node_modules:/var/www/src/node_modules
-      - ./rootfs/usr/local/etc/php/conf.d/settings.ini:/usr/local/etc/php/conf.d/settings.ini
+    environment:
+      # On or Off to show php errors
+      DISPLAY_ERRORS: "On" 
     networks:
       - app-network
     depends_on:

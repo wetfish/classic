@@ -30,11 +30,8 @@ RUN apk add --no-cache \
 	&& addgroup -S -g 1000 fishy && adduser -u 1000 -S -G fishy fishy
 	
 # Copy files and update perms where necessary
+COPY ./rootfs /
 COPY --chown=fishy:fishy . /var/www
-COPY ./config/services.d/ /etc/services.d
-ADD ./config/php.conf /usr/local/etc/php-fpm.conf
-ADD ./config/nginx.conf /etc/nginx/conf.d/default.conf
-ADD ./config/config.php /var/www/src/config.php
 
 
 # Set up some dirs and ownerships, then fetch our node packages

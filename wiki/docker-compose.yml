@@ -9,14 +9,10 @@ services:
     working_dir: /var/www
     env_file:
       - ./.env
-    environment: 
-      SITE_URL: $SITE_URL
-      MYSQL_USER: $DB_USERNAME
-      MYSQL_PASSWORD: $DB_PASSWORD
     volumes:
       - .:/var/www
       - node_modules:/var/www/src/node_modules
-      - ./config/php.ini:/usr/local/etc/php/conf.d/settings.ini
+      - ./rootfs/usr/local/etc/php/conf.d/settings.ini:/usr/local/etc/php/conf.d/settings.ini
     networks:
       - app-network
     depends_on:

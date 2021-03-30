@@ -11,7 +11,7 @@ services:
       - ./.env
     volumes:
       - .:/var/www
-      - ./rootfs/var/www/src/config.php:/var/www/src/config.php
+      - ./docker/config.php:/var/www/src/config.php
       - node_modules:/var/www/src/node_modules
     environment:
       DISPLAY_ERRORS: $DISPLAY_ERRORS 
@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     ports:
-      - "80:8080"
+      - "80:$HTTP_PORT"
 
   # MySQL Service
   db:

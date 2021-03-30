@@ -1,13 +1,10 @@
-FROM php:5.6-fpm-alpine
+FROM fishnet/php5.6-fpm-nginx-alpine
 
-WORKDIR /var/www
+COPY src/package.json src/package-lock.json /var/www/src/
 
 # get all the packages we need, build what we can't use from apk
 RUN apk add --no-cache \
-	bash \
-	curl \
 	git \
-	nginx \
 	nodejs \
 	npm \
 	libjpeg-turbo \
@@ -15,8 +12,6 @@ RUN apk add --no-cache \
 	libpng \
 	libpng-dev \
 	freetype-dev \
-        && curl -o /tmp/s6-overlay-amd64.tar.gz -jkSL https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.1/s6-overlay-amd64.tar.gz \
-	&& tar xvfz /tmp/s6-overlay-amd64.tar.gz -C / \
 	&& docker-php-ext-configure gd \
 		--with-freetype-dir=/usr/include \
 		--with-jpeg-dir=/usr/include \
@@ -25,18 +20,11 @@ RUN apk add --no-cache \
 	&& apk del --no-cache --purge \
 		libjpeg-turbo-dev \
 		libpng-dev \
-		curl \
 	&& rm -rf /tmp/* \
-	&& addgroup -S -g 1000 fishy && adduser -u 1000 -S -G fishy fishy
-	
-# Copy files and update perms where necessary
-COPY ./rootfs/ /
-COPY --chown=fishy:fishy . /var/www
-
-# Set up some dirs and ownerships, then fetch our node packages
-RUN mkdir -p /var/www/src/node_modules /run/nginx /usr/local/var/log \
-	&& chown -R fishy:fishy /usr/local/var/log /var/www/src/config.php \
+	&& addgroup -S -g 1000 fishy && adduser -u 1000 -S -G fishy fishy \
+	&& mkdir -p /var/www/src/node_modules \
 	&& npm install --prefix /var/www/src
 
-EXPOSE 8080
-ENTRYPOINT ["/init"]
+COPY ./docker/wiki.conf /etc/nginx/locations.d/wiki.conf
+COPY --chown=fishy:fishy . /var/www
+COPY --chown=fishy:fishy ./docker/config.php /var/www/src/config.php

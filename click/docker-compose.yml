@@ -12,25 +12,12 @@ services:
       - ./.env
     volumes:
       - .:/var/www
-      - ./config/php.ini:/usr/local/etc/php/conf.d/settings.ini
+    ports:
+      - "80:$HTTP_PORT"
     networks:
       - app-network
     depends_on:
       - db
-
-  webserver:
-    image: nginx:alpine
-    restart: unless-stopped
-    ports: 
-      - "80:80"
-    volumes:
-      - .:/var/www
-      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-    networks:
-      - app-network
-    depends_on:
-      - db
-      - click 
 
   # MySQL Service
   db:
@@ -57,6 +44,4 @@ networks:
 #Volumes
 volumes:
     dbdata:
-      driver: local
-    node_modules:
       driver: local

@@ -1,20 +1,13 @@
-FROM php:5.6-fpm-stretch
+FROM fishnet/php5.6-fpm-nginx-alpine
 
-WORKDIR /var/www
+RUN apk add --no-cache \
+	nodejs \
+	npm \
+	&& rm -rf /tmp/* \
+	&& addgroup -S -g 1000 fishy && adduser -u 1000 -S -G fishy fishy
 
-RUN groupadd -g 1000 fishy
-RUN useradd -u 1000 -ms /bin/bash -g fishy fishy
-
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -\
-    && apt-get update && apt-get install -y nodejs \
-    && docker-php-ext-install mysqli mysql \ 
-    && apt-get clean
-
+COPY ./docker/glitch.conf /etc/nginx/locations.d/glitch.conf
 COPY --chown=fishy:fishy . /var/www 
 
-USER fishy
-RUN npm install
-
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+RUN mkdir -p /var/www/node_modules \
+	&& npm install

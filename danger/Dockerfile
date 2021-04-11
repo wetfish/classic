@@ -1,13 +1,7 @@
-FROM php:5.6-fpm-stretch
+FROM fishnet/php5.6-fpm-nginx-alpine
 
-WORKDIR /var/www
+RUN docker-php-ext-install mysqli mysql \
+	&& addgroup -S -g 1000 fishy && adduser -u 1000 -S -G fishy fishy
 
-RUN docker-php-ext-install mysqli mysql
-
-RUN useradd fishy
-USER fishy
+COPY ./docker/danger.conf /etc/nginx/locations.d/danger.conf
 COPY --chown=fishy:fishy . /var/www
-
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]

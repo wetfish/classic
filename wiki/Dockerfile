@@ -1,28 +1,30 @@
-FROM php:5.6-fpm-stretch
+FROM fishnet/php5.6-fpm-nginx-alpine
 
-# Small note, make sure to create upload/thumbs prior to running this! 
-WORKDIR /var/www/src
-COPY ./src/package.json .
-RUN apt-get update && apt-get install -y \
-    apt-utils \
-    git \
-    libjpeg-dev \
-    libpng-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2/ --with-jpeg-dir=/usr/include/libjpeg \ 
-    && docker-php-ext-install mysqli mysql exif gd \
-    && apt-get clean
+COPY src/package.json src/package-lock.json /var/www/src/
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -\
-    && apt-get install -y nodejs \
-    && mkdir /var/www/src/node_modules \
-    && npm install --prefix /var/www/src
+# get all the packages we need, build what we can't use from apk
+RUN apk add --no-cache \
+	git \
+	nodejs \
+	npm \
+	libjpeg-turbo \
+	libjpeg-turbo-dev \
+	libpng \
+	libpng-dev \
+	freetype-dev \
+	&& docker-php-ext-configure gd \
+		--with-freetype-dir=/usr/include \
+		--with-jpeg-dir=/usr/include \
+		--with-png-dir=/usr/include \
+	&& docker-php-ext-install -j$(nproc) mysqli mysql exif gd \
+	&& apk del --no-cache --purge \
+		libjpeg-turbo-dev \
+		libpng-dev \
+	&& rm -rf /tmp/* \
+	&& addgroup -S -g 1000 fishy && adduser -u 1000 -S -G fishy fishy \
+	&& mkdir -p /var/www/src/node_modules \
+	&& npm install --prefix /var/www/src
 
-RUN useradd fishy
-USER fishy
-
-COPY --chown=fishy:fishy . /var/www/
-
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+COPY ./docker/wiki.conf /etc/nginx/locations.d/wiki.conf
+COPY --chown=fishy:fishy . /var/www
+COPY --chown=fishy:fishy ./docker/config.php /var/www/src/config.php

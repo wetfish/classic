@@ -104,6 +104,10 @@ function edit_replacements($tag, $content)
                     case "image/gif":
                         $Extension = "gif";
                         break;
+                    // This is now considered broadly supported
+                    case "image/webp":
+                        $Extension = "webp";
+                        break;
                     case "image/png":
                         $Extension = "png";
                         break;
@@ -119,6 +123,9 @@ function edit_replacements($tag, $content)
                     case "image/svg+xml":
                         $Extension = "svg";
                         break;
+                    case "video/quicktime":
+                        $Extension = "mp4";
+                        break;
                     default:
                         return "$Mime: Unsupported format! Please use: jpg, gif, png, webm, gifv, mp4, or ogv";
                 }
@@ -128,21 +135,31 @@ function edit_replacements($tag, $content)
                     $Filename = uuid();
                 }
 
+                // convert mov to mp4 explicitly
+//                if($Mime == "video/quicktime") {
+//                    $ffmpeg = FFMpeg\FFMpeg::create();
+//                    $video = $ffmpeg->open($Data);
+//                    $format = new FFMpeg\Format\Video\X264();
+//                    $format->setAudioCodec("libmp3lame");
+//
+//                    $video->save($format, "upload/$Filename.$Extension");
+//                } else {
 
-                // We have to loop through with file ops
-                // copy() doesn't seem to be able to handle tmpfile() data
-                $Disk = fopen("upload/$Filename.$Extension", "wb");
+			// We have to loop through with file ops
+			// copy() doesn't seem to be able to handle tmpfile() data
+			$Disk = fopen("upload/$Filename.$Extension", "wb");
 
-                // Make sure we're back at the start
-                fseek($Data, 0);
+			// Make sure we're back at the start
+			fseek($Data, 0);
 
-                while(! feof($Data))
-                {
-                        $block = fread($Data, 32768);
-                        fwrite($Disk, $block);
-                }
+			while(! feof($Data))
+			{
+				$block = fread($Data, 32768);
+				fwrite($Disk, $block);
+			}
 
-                fclose($Disk);
+			fclose($Disk);
+                //}
                 chmod("upload/$Filename.$Extension", 0644);
 
                 $Time = time();
